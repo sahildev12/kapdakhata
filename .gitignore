@@ -42,8 +42,9 @@ migrate_working_dir/
 **/ios/Pods/
 **/macos/Flutter/ephemeral/
 
-# Release builds (keep APKs out of git)
-/releases/
+# Release APKs (folder is tracked; binaries are not)
+/releases/*
+!/releases/README.md
 *.apk
 *.aab
 

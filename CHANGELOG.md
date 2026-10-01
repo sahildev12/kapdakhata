@@ -9,6 +9,10 @@ All notable changes to KapdaKhata are documented in this file.
 - Fix clear all data not removing items from the UI immediately
 - Prevent sample data from auto-loading again after the user clears all data
 
+### Tooling
+
+- Release builds are saved to `releases/KapdaKhata-v{version}.apk` via `scripts/build_release.ps1` / `build_release.sh`
+
 ## [1.0.0] - 2026-09-16
 
 ### First public release

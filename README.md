@@ -40,19 +40,21 @@
 
 **Latest release: v1.0.1**
 
-Build the APK locally:
+Build and save the APK to the `releases/` folder:
 
-```bash
-flutter build apk --release
+```powershell
+# Windows
+.\scripts\build_release.ps1
 ```
 
-Output: `build/app/outputs/flutter-apk/app-release.apk`
-
-Or install directly on a connected device:
-
 ```bash
-flutter install --release
+# macOS / Linux
+./scripts/build_release.sh
 ```
+
+Output: `releases/KapdaKhata-v1.0.1.apk`
+
+> Do not use `build/app/outputs/flutter-apk/` for releases. Always run the script above so APKs land in `releases/`.
 
 ## Development
 
@@ -106,6 +108,8 @@ lib/
 ├── features/   # Screens (home, products, sales, …)
 └── shared/     # Providers, repositories, services
 logos/          # App icon and branding assets
+releases/       # Release APKs (KapdaKhata-v{version}.apk)
+scripts/        # build_release.ps1 / build_release.sh
 ```
 
 ## Changelog
