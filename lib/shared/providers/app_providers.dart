@@ -177,19 +177,25 @@ final stockAlertsProvider = FutureProvider<List<StockAlert>>((ref) async {
       .toList();
 });
 
-/// Reopens the database and refreshes cached data after a backup restore.
-void reloadAppAfterRestore(WidgetRef ref) {
-  ref.invalidate(databaseProvider);
-  ref.invalidate(settingsProvider);
+/// Refreshes cached lists and metrics after data changes.
+void invalidateAppData(WidgetRef ref) {
   ref.invalidate(monthlyMetricsProvider);
   ref.invalidate(previousMonthMetricsProvider);
-  ref.invalidate(productCategoriesProvider);
-  ref.invalidate(expenseCategoriesProvider);
   ref.invalidate(productsStreamProvider);
   ref.invalidate(salesStreamProvider);
   ref.invalidate(expensesStreamProvider);
   ref.invalidate(recentSalesProvider);
   ref.invalidate(reportsMetricsProvider);
+  ref.invalidate(stockAlertsProvider);
+}
+
+/// Reopens the database and refreshes cached data after a backup restore.
+void reloadAppAfterRestore(WidgetRef ref) {
+  ref.invalidate(databaseProvider);
+  ref.invalidate(settingsProvider);
+  ref.invalidate(productCategoriesProvider);
+  ref.invalidate(expenseCategoriesProvider);
+  invalidateAppData(ref);
 }
 
 final reportsRangeProvider = StateProvider<ReportsRange>(

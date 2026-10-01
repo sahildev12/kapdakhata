@@ -2550,6 +2550,21 @@ class $ShopSettingsTable extends ShopSettings
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _sampleDataSeededMeta = const VerificationMeta(
+    'sampleDataSeeded',
+  );
+  @override
+  late final GeneratedColumn<bool> sampleDataSeeded = GeneratedColumn<bool>(
+    'sample_data_seeded',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("sample_data_seeded" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2561,6 +2576,7 @@ class $ShopSettingsTable extends ShopSettings
     lowStockThreshold,
     themeMode,
     notificationsEnabled,
+    sampleDataSeeded,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2631,6 +2647,15 @@ class $ShopSettingsTable extends ShopSettings
         ),
       );
     }
+    if (data.containsKey('sample_data_seeded')) {
+      context.handle(
+        _sampleDataSeededMeta,
+        sampleDataSeeded.isAcceptableOrUnknown(
+          data['sample_data_seeded']!,
+          _sampleDataSeededMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -2676,6 +2701,10 @@ class $ShopSettingsTable extends ShopSettings
         DriftSqlType.bool,
         data['${effectivePrefix}notifications_enabled'],
       )!,
+      sampleDataSeeded: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}sample_data_seeded'],
+      )!,
     );
   }
 
@@ -2695,6 +2724,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
   final int lowStockThreshold;
   final String themeMode;
   final bool notificationsEnabled;
+  final bool sampleDataSeeded;
   const ShopSetting({
     required this.id,
     required this.shopName,
@@ -2705,6 +2735,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
     required this.lowStockThreshold,
     required this.themeMode,
     required this.notificationsEnabled,
+    required this.sampleDataSeeded,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2722,6 +2753,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
     map['low_stock_threshold'] = Variable<int>(lowStockThreshold);
     map['theme_mode'] = Variable<String>(themeMode);
     map['notifications_enabled'] = Variable<bool>(notificationsEnabled);
+    map['sample_data_seeded'] = Variable<bool>(sampleDataSeeded);
     return map;
   }
 
@@ -2740,6 +2772,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
       lowStockThreshold: Value(lowStockThreshold),
       themeMode: Value(themeMode),
       notificationsEnabled: Value(notificationsEnabled),
+      sampleDataSeeded: Value(sampleDataSeeded),
     );
   }
 
@@ -2760,6 +2793,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
       notificationsEnabled: serializer.fromJson<bool>(
         json['notificationsEnabled'],
       ),
+      sampleDataSeeded: serializer.fromJson<bool>(json['sampleDataSeeded']),
     );
   }
   @override
@@ -2775,6 +2809,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
       'lowStockThreshold': serializer.toJson<int>(lowStockThreshold),
       'themeMode': serializer.toJson<String>(themeMode),
       'notificationsEnabled': serializer.toJson<bool>(notificationsEnabled),
+      'sampleDataSeeded': serializer.toJson<bool>(sampleDataSeeded),
     };
   }
 
@@ -2788,6 +2823,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
     int? lowStockThreshold,
     String? themeMode,
     bool? notificationsEnabled,
+    bool? sampleDataSeeded,
   }) => ShopSetting(
     id: id ?? this.id,
     shopName: shopName ?? this.shopName,
@@ -2798,6 +2834,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
     lowStockThreshold: lowStockThreshold ?? this.lowStockThreshold,
     themeMode: themeMode ?? this.themeMode,
     notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+    sampleDataSeeded: sampleDataSeeded ?? this.sampleDataSeeded,
   );
   ShopSetting copyWithCompanion(ShopSettingsCompanion data) {
     return ShopSetting(
@@ -2814,6 +2851,9 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
       notificationsEnabled: data.notificationsEnabled.present
           ? data.notificationsEnabled.value
           : this.notificationsEnabled,
+      sampleDataSeeded: data.sampleDataSeeded.present
+          ? data.sampleDataSeeded.value
+          : this.sampleDataSeeded,
     );
   }
 
@@ -2828,7 +2868,8 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
           ..write('currency: $currency, ')
           ..write('lowStockThreshold: $lowStockThreshold, ')
           ..write('themeMode: $themeMode, ')
-          ..write('notificationsEnabled: $notificationsEnabled')
+          ..write('notificationsEnabled: $notificationsEnabled, ')
+          ..write('sampleDataSeeded: $sampleDataSeeded')
           ..write(')'))
         .toString();
   }
@@ -2844,6 +2885,7 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
     lowStockThreshold,
     themeMode,
     notificationsEnabled,
+    sampleDataSeeded,
   );
   @override
   bool operator ==(Object other) =>
@@ -2857,7 +2899,8 @@ class ShopSetting extends DataClass implements Insertable<ShopSetting> {
           other.currency == this.currency &&
           other.lowStockThreshold == this.lowStockThreshold &&
           other.themeMode == this.themeMode &&
-          other.notificationsEnabled == this.notificationsEnabled);
+          other.notificationsEnabled == this.notificationsEnabled &&
+          other.sampleDataSeeded == this.sampleDataSeeded);
 }
 
 class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
@@ -2870,6 +2913,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
   final Value<int> lowStockThreshold;
   final Value<String> themeMode;
   final Value<bool> notificationsEnabled;
+  final Value<bool> sampleDataSeeded;
   const ShopSettingsCompanion({
     this.id = const Value.absent(),
     this.shopName = const Value.absent(),
@@ -2880,6 +2924,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
     this.lowStockThreshold = const Value.absent(),
     this.themeMode = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
+    this.sampleDataSeeded = const Value.absent(),
   });
   ShopSettingsCompanion.insert({
     this.id = const Value.absent(),
@@ -2891,6 +2936,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
     this.lowStockThreshold = const Value.absent(),
     this.themeMode = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
+    this.sampleDataSeeded = const Value.absent(),
   });
   static Insertable<ShopSetting> custom({
     Expression<int>? id,
@@ -2902,6 +2948,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
     Expression<int>? lowStockThreshold,
     Expression<String>? themeMode,
     Expression<bool>? notificationsEnabled,
+    Expression<bool>? sampleDataSeeded,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2914,6 +2961,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
       if (themeMode != null) 'theme_mode': themeMode,
       if (notificationsEnabled != null)
         'notifications_enabled': notificationsEnabled,
+      if (sampleDataSeeded != null) 'sample_data_seeded': sampleDataSeeded,
     });
   }
 
@@ -2927,6 +2975,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
     Value<int>? lowStockThreshold,
     Value<String>? themeMode,
     Value<bool>? notificationsEnabled,
+    Value<bool>? sampleDataSeeded,
   }) {
     return ShopSettingsCompanion(
       id: id ?? this.id,
@@ -2938,6 +2987,7 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
       lowStockThreshold: lowStockThreshold ?? this.lowStockThreshold,
       themeMode: themeMode ?? this.themeMode,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      sampleDataSeeded: sampleDataSeeded ?? this.sampleDataSeeded,
     );
   }
 
@@ -2971,6 +3021,9 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
     if (notificationsEnabled.present) {
       map['notifications_enabled'] = Variable<bool>(notificationsEnabled.value);
     }
+    if (sampleDataSeeded.present) {
+      map['sample_data_seeded'] = Variable<bool>(sampleDataSeeded.value);
+    }
     return map;
   }
 
@@ -2985,7 +3038,8 @@ class ShopSettingsCompanion extends UpdateCompanion<ShopSetting> {
           ..write('currency: $currency, ')
           ..write('lowStockThreshold: $lowStockThreshold, ')
           ..write('themeMode: $themeMode, ')
-          ..write('notificationsEnabled: $notificationsEnabled')
+          ..write('notificationsEnabled: $notificationsEnabled, ')
+          ..write('sampleDataSeeded: $sampleDataSeeded')
           ..write(')'))
         .toString();
   }
@@ -5183,6 +5237,7 @@ typedef $$ShopSettingsTableCreateCompanionBuilder =
       Value<int> lowStockThreshold,
       Value<String> themeMode,
       Value<bool> notificationsEnabled,
+      Value<bool> sampleDataSeeded,
     });
 typedef $$ShopSettingsTableUpdateCompanionBuilder =
     ShopSettingsCompanion Function({
@@ -5195,6 +5250,7 @@ typedef $$ShopSettingsTableUpdateCompanionBuilder =
       Value<int> lowStockThreshold,
       Value<String> themeMode,
       Value<bool> notificationsEnabled,
+      Value<bool> sampleDataSeeded,
     });
 
 class $$ShopSettingsTableFilterComposer
@@ -5248,6 +5304,11 @@ class $$ShopSettingsTableFilterComposer
 
   ColumnFilters<bool> get notificationsEnabled => $composableBuilder(
     column: $table.notificationsEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get sampleDataSeeded => $composableBuilder(
+    column: $table.sampleDataSeeded,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -5305,6 +5366,11 @@ class $$ShopSettingsTableOrderingComposer
     column: $table.notificationsEnabled,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get sampleDataSeeded => $composableBuilder(
+    column: $table.sampleDataSeeded,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ShopSettingsTableAnnotationComposer
@@ -5344,6 +5410,11 @@ class $$ShopSettingsTableAnnotationComposer
 
   GeneratedColumn<bool> get notificationsEnabled => $composableBuilder(
     column: $table.notificationsEnabled,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get sampleDataSeeded => $composableBuilder(
+    column: $table.sampleDataSeeded,
     builder: (column) => column,
   );
 }
@@ -5388,6 +5459,7 @@ class $$ShopSettingsTableTableManager
                 Value<int> lowStockThreshold = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
+                Value<bool> sampleDataSeeded = const Value.absent(),
               }) => ShopSettingsCompanion(
                 id: id,
                 shopName: shopName,
@@ -5398,6 +5470,7 @@ class $$ShopSettingsTableTableManager
                 lowStockThreshold: lowStockThreshold,
                 themeMode: themeMode,
                 notificationsEnabled: notificationsEnabled,
+                sampleDataSeeded: sampleDataSeeded,
               ),
           createCompanionCallback:
               ({
@@ -5410,6 +5483,7 @@ class $$ShopSettingsTableTableManager
                 Value<int> lowStockThreshold = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
+                Value<bool> sampleDataSeeded = const Value.absent(),
               }) => ShopSettingsCompanion.insert(
                 id: id,
                 shopName: shopName,
@@ -5420,6 +5494,7 @@ class $$ShopSettingsTableTableManager
                 lowStockThreshold: lowStockThreshold,
                 themeMode: themeMode,
                 notificationsEnabled: notificationsEnabled,
+                sampleDataSeeded: sampleDataSeeded,
               ),
           withReferenceMapper: (p0) => p0
               .map(

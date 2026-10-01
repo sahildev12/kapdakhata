@@ -2,6 +2,13 @@
 
 All notable changes to KapdaKhata are documented in this file.
 
+## [1.0.1] - 2026-10-01
+
+### Bug fixes
+
+- Fix clear all data not removing items from the UI immediately
+- Prevent sample data from auto-loading again after the user clears all data
+
 ## [1.0.0] - 2026-09-16
 
 ### First public release

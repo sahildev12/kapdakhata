@@ -73,6 +73,8 @@ class ShopSettings extends Table {
       text().withDefault(const Constant('light'))();
   BoolColumn get notificationsEnabled =>
       boolean().withDefault(const Constant(true))();
+  BoolColumn get sampleDataSeeded =>
+      boolean().withDefault(const Constant(false))();
 }
 
 class SaleNameSuggestions extends Table {
@@ -96,7 +98,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -107,6 +109,12 @@ class AppDatabase extends _$AppDatabase {
         onUpgrade: (Migrator m, int from, int to) async {
           if (from < 2) {
             await m.createTable(saleNameSuggestions);
+          }
+          if (from < 3) {
+            await m.addColumn(shopSettings, shopSettings.sampleDataSeeded);
+            await customStatement(
+              'UPDATE shop_settings SET sample_data_seeded = 1',
+            );
           }
         },
       );
@@ -717,6 +725,7 @@ class AppDatabase extends _$AppDatabase {
           lowStockThreshold: 5,
           themeMode: 'system',
           notificationsEnabled: true,
+          sampleDataSeeded: false,
         );
       }
       return s;
@@ -724,9 +733,17 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> clearAllData() async {
-    await delete(sales).go();
-    await delete(expenses).go();
-    await delete(products).go();
+    await transaction(() async {
+      await delete(sales).go();
+      await delete(expenses).go();
+      await delete(products).go();
+    });
+  }
+
+  Future<void> markSampleDataSeeded() async {
+    final settings = await getSettings();
+    await (update(shopSettings)..where((t) => t.id.equals(settings.id)))
+        .write(const ShopSettingsCompanion(sampleDataSeeded: Value(true)));
   }
 
   Future<int> activeProductCount() async {

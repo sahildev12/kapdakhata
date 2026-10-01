@@ -7,8 +7,15 @@ class DummyDataService {
   final AppDatabase _db;
 
   Future<bool> seedIfEmpty() async {
+    final settings = await _db.getSettings();
+    if (settings.sampleDataSeeded) return false;
+
     final count = await _db.activeProductCount();
-    if (count > 0) return false;
+    if (count > 0) {
+      await _db.markSampleDataSeeded();
+      return false;
+    }
+
     await seed();
     return true;
   }
@@ -244,6 +251,8 @@ class DummyDataService {
             );
       }
     });
+
+    await _db.markSampleDataSeeded();
   }
 }
 

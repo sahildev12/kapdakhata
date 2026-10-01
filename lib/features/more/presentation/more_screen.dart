@@ -130,10 +130,7 @@ class MoreScreen extends ConsumerWidget {
     }
 
     await DummyDataService(db).seed();
-    ref.invalidate(productsStreamProvider);
-    ref.invalidate(salesStreamProvider);
-    ref.invalidate(expensesStreamProvider);
-    ref.invalidate(monthlyMetricsProvider);
+    invalidateAppData(ref);
     ref.invalidate(settingsProvider);
 
     if (context.mounted) {

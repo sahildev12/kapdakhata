@@ -99,7 +99,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
     if (confirmed) {
       await ref.read(settingsRepositoryProvider).clearAllData();
+      invalidateAppData(ref);
       if (mounted) {
+        context.go('/home');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('All data cleared')),
         );

@@ -6,68 +6,61 @@
 
 <p align="center">
   <strong>Manage • Sell • Grow</strong><br/>
-  A simple clothing shop management app for shop owners.
+  Simple clothing shop management for shop owners.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-purple" alt="Version 1.0.0" />
+  <img src="https://img.shields.io/badge/version-1.0.1-purple" alt="Version 1.0.1" />
   <img src="https://img.shields.io/badge/platform-Android-green" alt="Android" />
-  <img src="https://img.shields.io/badge/built%20with-Flutter-7132F5" alt="Flutter" />
+  <img src="https://img.shields.io/badge/Flutter-3.12+-7132F5" alt="Flutter" />
 </p>
 
 ---
 
 ## About
 
-**KapdaKhata** helps clothing shop owners manage day-to-day business without complicated accounting software.
+**KapdaKhata** helps clothing shop owners track products, sales, expenses, and monthly profit — without complicated accounting software. All data is stored locally on your device.
 
-**Kapda** = clothing · **Khata** = business record
-
-Track products, record sales, monitor expenses, and view monthly profit/loss — all from your phone, with data stored locally on the device.
+| | |
+|---|---|
+| **Kapda** | clothing |
+| **Khata** | business record |
 
 ## Features
 
-| Area | What you can do |
-|------|-----------------|
-| **Home** | Monthly dashboard, net profit, sales summary, quick actions |
-| **Products** | Add/edit products, photos, stock, categories, low-stock alerts |
-| **Sell** | Record sales with custom item suggestions and auto profit calculation |
-| **Expenses** | Track business expenses by category with date filters |
-| **Reports** | Monthly trends, expense breakdown, top products |
-| **More** | Backup/restore, CSV export, theme (light/dark/system), sample data |
-| **Settings** | Shop profile, categories, sale suggestions, notifications threshold |
+- **Dashboard** — monthly profit, sales summary, recent activity
+- **Products** — stock, photos, categories, low-stock alerts
+- **Sell** — multi-item sales, custom suggestions, auto profit
+- **Expenses** — categories, date filters, detail views
+- **Reports** — trends, expense breakdown, top products
+- **Backup** — local backup, restore, daily auto-backup, CSV export
+- **Settings** — shop profile, themes, notifications, sale suggestions
 
-## Screenshots
+## Download
 
-> Add device screenshots here after your first install.
+**Latest release: v1.0.1**
 
-## Requirements
-
-- **Android** 5.0+ (API 21+)
-- **Flutter** 3.12+ for development
-- **Dart** 3.12+
-
-## Install (Release APK)
-
-Download or build the release APK:
+Build the APK locally:
 
 ```bash
 flutter build apk --release
 ```
 
-The signed debug-key release APK is generated at:
+Output: `build/app/outputs/flutter-apk/app-release.apk`
 
-```
-build/app/outputs/flutter-apk/app-release.apk
-```
-
-Install on a connected device:
+Or install directly on a connected device:
 
 ```bash
 flutter install --release
 ```
 
 ## Development
+
+### Prerequisites
+
+- Flutter 3.12+
+- Dart 3.12+
+- Android SDK (for Android builds)
 
 ### Setup
 
@@ -76,68 +69,60 @@ git clone https://github.com/sahildev12/kapdakhata.git
 cd kapdakhata
 flutter pub get
 dart run build_runner build
-```
-
-### Run
-
-```bash
 flutter run
 ```
 
-### Test & analyze
+### Quality checks
 
 ```bash
 flutter analyze
 flutter test
 ```
 
-### App icon
-
-Icons are generated from `logos/android-chrome-512x512.png`:
+### Regenerate app icons
 
 ```bash
 dart run flutter_launcher_icons
 ```
 
-## Tech Stack
+Source icon: `logos/android-chrome-512x512.png`
 
-- **Flutter** + **Riverpod** (state management)
-- **Drift** + **SQLite** (local database)
-- **GoRouter** (navigation)
-- **Google Fonts** (IBM Plex Sans)
+## Tech stack
 
-## Project Structure
+| Layer | Technology |
+|-------|------------|
+| UI | Flutter, Material 3 |
+| State | Riverpod |
+| Database | Drift + SQLite |
+| Navigation | GoRouter |
+| Fonts | IBM Plex Sans (Google Fonts) |
+
+## Project layout
 
 ```
 lib/
-├── core/          # Theme, router, widgets, utils
-├── database/      # Drift schema & queries
-├── features/      # Home, products, sales, expenses, reports, settings, more
-└── shared/        # Providers, repositories, services
+├── core/       # Theme, router, shared widgets
+├── database/   # Drift schema and queries
+├── features/   # Screens (home, products, sales, …)
+└── shared/     # Providers, repositories, services
+logos/          # App icon and branding assets
 ```
 
-## Version History
+## Changelog
 
-### 1.0.0 (First Release)
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
-- Shop dashboard with monthly metrics
-- Product, sales, and expense management
-- Reports and CSV export
-- Local backup, restore, and daily auto-backup
-- Custom sale item suggestions
-- Low-stock notifications
-- Light / dark / system theme
+### v1.0.1 (latest)
+
+- Fix clear all data not updating the UI
+- Prevent demo data from reloading after clear
 
 ## Permissions
 
-| Permission | Used for |
-|------------|----------|
-| Camera | Product photo capture only (requested when needed) |
+| Permission | Why |
+|------------|-----|
+| Camera | Product photos only (requested when needed) |
 
 ## License
 
 Private project — all rights reserved.
-
-## Author
-
-Built for clothing shop owners who want a simple, mobile-first business record app.
